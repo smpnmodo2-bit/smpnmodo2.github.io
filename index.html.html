@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MPI Informatika – Sistem Komputer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Segoe UI',Tahoma,Arial,sans-serif;color:#0f2a43}
+body{background:#f0f9ff url('bg-ruang-kelas.jpg') center/cover no-repeat fixed;display:flex;align-items:center;justify-content:center}
+body::before{content:"";position:fixed;inset:0;background:rgba(240,249,255,.82)}
+#stage-16-9{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;background:transparent;border:none;box-shadow:none;border-radius:0;overflow:hidden;font-size:calc(15px*var(--font-scale,1));transform:scale(var(--z,1));transition:transform .2s}
+.pg{display:none;position:absolute;inset:0;padding:clamp(10px,1.8vh,18px);padding-top:calc(clamp(40px,5.2vh,48px) + clamp(14px,2.4vh,22px));flex-direction:column;gap:clamp(8px,1.4vh,14px)}
+.pg.on{display:flex;animation:fi .35s}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}}
+#nav{position:absolute;top:clamp(8px,1.4vh,14px);right:clamp(10px,1.8vh,18px);left:clamp(10px,1.8vh,18px);display:flex;gap:8px;justify-content:flex-end;align-items:center;z-index:20}
+.nb{height:clamp(40px,5.2vh,48px);min-width:clamp(40px,5.2vh,48px);border-radius:99px;border:3px solid #fff;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font-weight:800;font-size:clamp(18px,2.3vh,23px);cursor:pointer;box-shadow:0 4px 10px #0003;padding:0 12px}
+.nb.t{font-size:clamp(13px,1.8vh,16px)}.nb:hover{filter:brightness(1.12)}
+.ttl{align-self:flex-start;background:linear-gradient(90deg,#f59e0b,#ef4444);color:#fff;font-weight:800;font-size:clamp(16px,2.2vh,22px);padding:6px 20px;border-radius:99px;border:3px solid #fff;box-shadow:0 4px 10px #0003}
+.card{background:#fffffff0;border:3px solid #fff;border-radius:20px;box-shadow:0 6px 16px #0b3a5c33;padding:clamp(10px,1.8vh,18px)}
+p,li{font-size:clamp(13px,1.65vh,16px);font-weight:600;line-height:1.48}
+h3{font-size:clamp(15px,2vh,20px);font-weight:800}
+.ib{width:clamp(66px,9vh,88px);height:clamp(66px,9vh,88px);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:clamp(34px,4.8vh,46px);box-shadow:0 5px 12px #0003,inset 0 -5px #0002;flex:none}
+.btn{font-size:clamp(13.5px,1.8vh,17px);font-weight:800;padding:10px 22px;border-radius:14px;border:3px solid #fff;background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;cursor:pointer;box-shadow:0 4px 10px #0003}
+.btn:hover{filter:brightness(1.1)}.btn.ok{background:#16a34a!important}.btn.no{background:#dc2626!important}
+/* cover */
+#p1{align-items:center;justify-content:space-between;padding-top:clamp(10px,1.8vh,18px);text-align:center}
+.cap{display:flex;align-items:center;gap:14px;background:#fff;border-radius:99px;padding:6px 26px 6px 10px;box-shadow:0 4px 12px #0003;border:3px solid #38bdf8}
+.cap img{height:clamp(50px,6.8vh,68px)}.cap b{font-size:clamp(15px,2.1vh,20px);display:block;text-align:left;color:#0c4a6e}.cap small{font-weight:700;display:block;text-align:left;font-size:clamp(11px,1.5vh,14px)}
+.bd{display:inline-block;background:#f59e0b;color:#fff;font-weight:800;padding:4px 14px;border-radius:99px;font-size:clamp(11px,1.5vh,14px);margin-left:6px}
+.big{font-size:clamp(2.8rem,6.8vw,5.2rem);font-weight:900;color:#e11d48;line-height:1;text-shadow:4px 4px 0 #fff,-4px -4px 0 #fff,4px -4px 0 #fff,-4px 4px 0 #fff,0 8px 0 #fb923c}
+.sub{font-size:clamp(1.4rem,3.2vw,2.6rem);font-weight:900;color:#1d4ed8;text-shadow:3px 3px 0 #fff,-3px -3px 0 #fff,3px -3px 0 #fff,-3px 3px 0 #fff;margin-top:8px}
+.play{display:inline-flex;align-items:center;gap:16px;cursor:pointer;background:none;border:none;margin-top:clamp(10px,2vh,22px)}
+.play i{width:clamp(60px,8.5vh,80px);height:clamp(60px,8.5vh,80px);border-radius:50%;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;font-style:normal;font-size:clamp(26px,3.6vh,36px);display:flex;align-items:center;justify-content:center;border:4px solid #fff;animation:pu 1.4s infinite}
+.play span{font-size:clamp(24px,3.8vh,36px);font-weight:900;color:#15803d;text-shadow:2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff}
+@keyframes pu{0%,100%{box-shadow:0 0 0 0 #22c55eaa}50%{box-shadow:0 0 0 22px #22c55e00;transform:scale(1.08)}}
+.ft{background:#fff;border-radius:16px;padding:8px 22px;font-weight:700;font-size:clamp(12px,1.7vh,16px);box-shadow:0 4px 10px #0002;border:2px solid #bae6fd}
+/* menu */
+.grid{display:grid;gap:clamp(8px,1.6vh,16px);flex:1;min-height:0}
+#mg{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
+.mc{display:flex;align-items:center;gap:14px;cursor:pointer;transition:.2s;border-bottom:7px solid #0003}
+.mc:hover{transform:translateY(-4px) scale(1.02)}
+.mc p{margin-top:3px}
+/* tp */
+.tp{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.6vh,16px);max-width:86%;align-self:center;width:100%}
+.tp li{list-style:none;display:flex;gap:12px;align-items:center;background:#f0f9ff;border-radius:14px;padding:clamp(7px,1.3vh,12px) 14px;border:2px solid #bae6fd;font-size:clamp(13.5px,1.8vh,16px)}
+.tp li s{text-decoration:none;font-size:clamp(20px,3vh,28px)}
+/* materi */
+#mt{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
+.kc{display:flex;flex-direction:column;gap:6px;overflow:hidden;padding:clamp(8px,1.4vh,14px)}
+.kc .h{display:flex;align-items:center;gap:12px}
+.kc svg{width:100%;flex:1;min-height:0}
+/* sim */
+.sim{display:flex;gap:14px;flex:1;min-height:0}
+.sim .card:first-child{flex:1.7;display:flex;flex-direction:column;min-width:0}
+#sv{width:100%;height:clamp(260px,38vh,420px);max-height:100%}
+.sp{flex:1;display:flex;flex-direction:column;gap:10px}
+.md{display:flex;flex-wrap:wrap;gap:6px}.md .btn{padding:7px 12px;font-size:clamp(12px,1.6vh,15px)}
+.tele{background:#0f172a;color:#4ade80;border-radius:14px;padding:12px;font-family:Consolas,monospace;font-weight:700;font-size:clamp(12.5px,1.6vh,15px);line-height:1.5;flex:1}
+@keyframes fl{to{stroke-dashoffset:-30}}@keyframes pl{50%{transform:scale(1.05)}}
+.flow{stroke-dasharray:8 7;animation:fl .7s linear infinite}
+.part{cursor:pointer;transform-box:fill-box;transform-origin:center}.part.on{animation:pl .8s infinite}
+/* eval */
+.ev{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;align-items:center;min-height:0}
+.ev .card{width:88%}
+.q{font-size:clamp(15px,2vh,19px);font-weight:800;margin-bottom:10px}
+.op{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.op .btn{background:#fff;color:#0c4a6e;border-color:#7dd3fc;text-align:left}
+.mt{position:relative;display:flex;justify-content:space-between;padding:0 4%;gap:30%}
+.mt div.col{display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px);flex:1}
+.mi{background:#e0f2fe;border:3px solid #38bdf8;border-radius:12px;padding:8px 12px;font-weight:800;font-size:clamp(13px,1.7vh,16px);cursor:pointer;text-align:center}
+.mi.sel{background:#fde68a;border-color:#f59e0b}.mi.done{background:#bbf7d0;border-color:#16a34a;cursor:default}.mi.bad{animation:sh .4s;background:#fecaca}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#ml{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.fb{font-weight:800;min-height:1.5em;font-size:clamp(13px,1.7vh,16px)}
+.tr{font-size:clamp(44px,6vh,60px);filter:drop-shadow(0 4px 6px #0004)}
+.cup{font-size:clamp(60px,10vh,90px);animation:pl 1.2s infinite}
+.score{font-size:clamp(3rem,8vh,5rem);font-weight:900;color:#e11d48}
+/* profil */
+.pf{flex:1;display:flex;align-items:center;justify-content:center;gap:34px}
+.ph{width:clamp(130px,18vh,175px);height:clamp(130px,18vh,175px);border-radius:50%;border:5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#f59e0b,#ef4444,#6366f1) border-box;object-fit:cover;object-position:top;filter:drop-shadow(0 6px 8px #0005)}
+.ph.fb2{display:flex;align-items:center;justify-content:center;font-size:60px}
+#modal{display:none;position:absolute;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center}
+#modal.on{display:flex}#modal .card{width:56%;text-align:center;padding:24px}
+</style></head><body>
+<div id="stage-16-9">
+<div id="nav">
+<button class="nb t" onclick="go(2)">🏠 BERANDA</button>
+<button class="nb t" id="snd" onclick="togS()">🔊 Suara: ON</button>
+<button class="nb" title="Huruf kecil" onclick="fs(-.1)">A−</button><button class="nb" title="Huruf besar" onclick="fs(.1)">A+</button>
+<button class="nb" title="Perkecil" onclick="zm(-.1)">➖</button><button class="nb" title="Perbesar" onclick="zm(.1)">➕</button>
+</div>
+
+<!-- 1 COVER -->
+<section class="pg on" id="p1">
+<div style="text-align:center"><div class="cap"><img src="WhatsApp_Image_2026-05-12_at_18_35_33.jpeg" alt="" onerror="this.style.display='none'"><div><b id="c-sek"></b><small>Dinas Pendidikan Kabupaten Lamongan</small></div><div><span class="bd">Kurikulum Merdeka</span><span class="bd" style="background:#6366f1">Fase D</span></div></div></div>
+<div><div class="big">SISTEM KOMPUTER</div><div class="sub">Pengenalan Perangkat Keras Komputer</div>
+<button class="play" onclick="go(2)"><i>▶</i><span>MULAI</span></button></div>
+<div class="ft">👨‍🏫 Dikembangkan oleh <b id="c-gr"></b> — <span id="c-sk2"></span> &nbsp;|&nbsp; <i>“Belajar teknologi, membangun masa depan.”</i></div>
+</section>
+
+<!-- 2 MENU -->
+<section class="pg" id="p2"><div class="ttl">📋 Menu Utama — <span class="mp"></span></div><div class="grid" id="mg"></div></section>
+
+<!-- 3 TP -->
+<section class="pg" id="p3"><div class="ttl">🎯 Tujuan Pembelajaran</div>
+<div class="card tp"><h3 style="text-align:center">Setelah mempelajari media ini, peserta didik mampu:</h3><ul style="display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px)">
+<li><s>🧩</s>Menjelaskan komponen sistem komputer: hardware, software, dan brainware.</li>
+<li><s>⌨️</s>Mengidentifikasi perangkat input, proses, output, memori, dan penyimpanan beserta fungsinya.</li>
+<li><s>🔄</s>Menguraikan alur kerja data: input → proses → output → penyimpanan.</li>
+<li><s>🧠</s>Membedakan RAM dan penyimpanan (HDD/SSD) berdasarkan sifat datanya.</li>
+<li><s>🏆</s>Menyimpulkan peran tiap perangkat keras dalam satu sistem komputer yang utuh.</li></ul></div></section>
+
+<!-- 4 MATERI -->
+<section class="pg" id="p4"><div class="ttl">📖 Materi Pembelajaran — Perangkat Keras Komputer</div><div class="grid" id="mt"></div></section>
+
+<!-- 5 SIM -->
+<section class="pg" id="p5"><div class="ttl">🕹️ Laboratorium Virtual — Bongkar Sistem Komputer</div>
+<div class="sim"><div class="card"><svg id="sv" viewBox="0 0 700 330"></svg></div>
+<div class="sp"><div class="card"><h3>Pilih Mode Alur Data</h3><div class="md" style="margin-top:8px" id="md"></div></div>
+<div class="tele" id="tele">&gt; Klik sebuah perangkat pada gambar atau pilih mode alur data.</div></div></div></section>
+
+<!-- 6 EVAL -->
+<section class="pg" id="p6"><div class="ttl" id="evt">📝 Evaluasi — Babak A: Pilihan Ganda (30 poin)</div><div class="ev" id="ev"></div></section>
+
+<!-- 7 PROFIL -->
+<section class="pg" id="p7"><div class="ttl">👨‍🏫 Profil Guru Pengembang</div>
+<div class="pf"><img class="ph" src="WhatsApp_Image_2026-07-14_at_07_13_49.jpeg" alt="Foto guru" onerror="this.style.display='none'">
+<div class="card" style="max-width:55%"><div style="font-size:clamp(20px,3vh,24px);font-weight:900;color:#0c4a6e" id="pr-n"></div>
+<p style="font-size:clamp(13px,1.9vh,15px);margin-top:6px">🏫 Guru <span class="mp"></span> — <span id="pr-s"></span></p>
+<p style="margin-top:4px">📌 Fasilitator pembelajaran & pengembang Media Pembelajaran Interaktif Kurikulum Merdeka.</p>
+<p style="margin-top:12px;font-style:italic;color:#b45309;font-size:clamp(14px,1.9vh,17px)">“Pendidikan bukan sekadar mengisi wadah, tetapi menyalakan api semangat belajar.”</p></div></div></section>
+
+<div id="modal"><div class="card"><div style="font-size:50px">💡</div><h3 style="margin:6px 0">Wawasan & Fakta Menarik</h3><p id="fk" style="font-size:clamp(14px,2vh,18px);margin-bottom:14px"></p><button class="btn" onclick="nf()">Fakta berikutnya ➡</button> <button class="btn no" onclick="$('modal').classList.remove('on')">Tutup</button></div></div>
+</div>
+
+<script>
+/* ===== DATA IDENTITAS (Bagian 1) ===== */
+const ID={mapel:'Informatika',materi:'Sistem Komputer',guru:'Sugiyanto, S.Pd.',sek:'SMP Negeri 2 Modo'};
+const $=i=>document.getElementById(i);
+document.querySelectorAll('.mp').forEach(e=>e.textContent=ID.mapel);
+$('c-sek').textContent=ID.sek.toUpperCase();$('c-gr').textContent=ID.guru;$('c-sk2').textContent=ID.sek;$('pr-n').textContent=ID.guru;$('pr-s').textContent=ID.sek;
+/* ===== AUDIO ===== */
+let on=true,ac;
+function tone(f,t,d,ty='sine',v=.15){if(!on)return;ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.setValueAtTime(f,ac.currentTime+t);g.gain.setValueAtTime(v,ac.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t+d);o.connect(g);g.connect(ac.destination);o.start(ac.currentTime+t);o.stop(ac.currentTime+t+d)}
+function click(){if(!on)return;ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(450,ac.currentTime);o.frequency.exponentialRampToValueAtTime(880,ac.currentTime+.12);g.gain.setValueAtTime(.15,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.15);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.16)}
+const good=()=>[523,659,784].forEach((f,i)=>tone(f,i*.1,.3,'triangle')),bad=()=>{tone(160,0,.35,'sawtooth',.12);tone(120,.15,.35,'sawtooth',.12)};
+function togS(){on=!on;$('snd').textContent=on?'🔊 Suara: ON':'🔇 Suara: OFF';click()}
+document.addEventListener('click',e=>{if(e.target.closest('.btn,.nb,.mc,.play')&&!e.target.closest('.op'))click()});
+/* ===== NAV & AKSESIBILITAS ===== */
+const st=$('stage-16-9');let fsz=1,z=1;
+function go(n){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));$('p'+n).classList.add('on');if(n==6)evInit();if(n==5)simInit()}
+function fs(d){fsz=Math.min(1.3,Math.max(.8,fsz+d));st.style.setProperty('--font-scale',fsz)}
+function zm(d){z=Math.min(1.3,Math.max(.7,z+d));st.style.setProperty('--z',z)}
+/* ===== MENU ===== */
+const M=[['🎯','Tujuan Pembelajaran','Capaian & indikator kompetensi','#f59e0b',3],['📖','Materi Pembelajaran','Konsep kunci perangkat keras','#0ea5e9',4],['🕹️','Simulasi Interaktif','Bongkar komputer virtual','#22c55e',5],['📝','Evaluasi Multi-Format','3 babak, skor total 100','#ef4444',6],['👨‍🏫','Profil Guru','Fasilitator pembelajaran','#8b5cf6',7],['💡','Wawasan & Fakta','Fakta menarik komputer','#ec4899',0]];
+$('mg').innerHTML=M.map(m=>`<div class="card mc" onclick="${m[4]?'go('+m[4]+')':'nf()'}"><div class="ib" style="background:linear-gradient(135deg,${m[3]},${m[3]}aa)">${m[0]}</div><div><h3>${m[1]}</h3><p>${m[2]}</p></div></div>`).join('');
+/* ===== MATERI ===== */
+const K=[['⌨️','Perangkat Input','Alat untuk memasukkan data ke komputer, misalnya keyboard, mouse, scanner, dan mikrofon.','#0ea5e9'],['🧠','Prosesor (CPU)','Otak komputer yang mengeksekusi instruksi dan menghitung data. Kecepatannya diukur dalam GHz.','#ef4444'],['⚡','Memori Utama (RAM)','Penyimpan sementara data yang sedang dipakai. Bersifat volatile: data hilang saat listrik mati.','#f59e0b'],['💾','Penyimpanan (HDD/SSD)','Menyimpan data secara permanen. SSD lebih cepat dari HDD karena tanpa piringan berputar.','#22c55e'],['🖥️','Perangkat Output','Menampilkan hasil pemrosesan: monitor (visual), printer (cetak), speaker (suara).','#8b5cf6'],['👩‍💻','Hardware–Software–Brainware','Sistem komputer = perangkat keras + perangkat lunak + manusia pengguna (brainware).','#ec4899']];
+const sv=[c=>`<rect x="10" y="40" width="110" height="38" rx="6" fill="${c}"/><circle cx="150" cy="60" r="16" fill="${c}"/><path d="M10 105h260" stroke="${c}" stroke-width="5" stroke-dasharray="8 6" class="flow"/>`,c=>`<rect x="60" y="20" width="90" height="90" rx="10" fill="${c}"/><rect x="85" y="45" width="40" height="40" rx="5" fill="#fff"/><path d="M60 50H40M60 80H40M150 50h20M150 80h20" stroke="${c}" stroke-width="5"/>`,c=>`<rect x="20" y="40" width="190" height="34" rx="6" fill="${c}"/><path d="M45 40v-14M85 40v-14M125 40v-14M165 40v-14" stroke="${c}" stroke-width="6"/>`,c=>`<rect x="30" y="20" width="150" height="90" rx="10" fill="${c}"/><circle cx="105" cy="65" r="30" fill="#fff" opacity=".8"/><circle cx="105" cy="65" r="8" fill="${c}"/>`,c=>`<rect x="30" y="15" width="150" height="85" rx="8" fill="${c}"/><rect x="42" y="27" width="126" height="61" rx="4" fill="#fff"/><path d="M85 100v14h40v-14" stroke="${c}" stroke-width="6"/>`,c=>`<circle cx="50" cy="55" r="22" fill="${c}"/><rect x="95" y="30" width="70" height="50" rx="6" fill="${c}"/><path d="M30 105h150" stroke="${c}" stroke-width="5" class="flow"/>`];
+$('mt').innerHTML=K.map((k,i)=>`<div class="card kc"><div class="h"><div class="ib" style="background:linear-gradient(135deg,${k[3]},${k[3]}99)">${k[0]}</div><h3>${k[1]}</h3></div><p>${k[2]}</p><svg viewBox="0 0 230 130" preserveAspectRatio="xMidYMid meet" style="max-height:26%">${sv[i](k[3])}</svg></div>`).join('');
+/* ===== FAKTA ===== */
+const F=['Komputer elektronik pertama, ENIAC (1945), beratnya sekitar 27 ton dan memenuhi satu ruangan besar!','Hard disk pertama (IBM, 1956) berukuran sebesar lemari es dan hanya menyimpan sekitar 5 MB data.','Mouse pertama dibuat dari kayu oleh Douglas Engelbart pada tahun 1964.','Prosesor modern memuat miliaran transistor dalam chip sebesar kuku jari.','Data di RAM akan hilang saat komputer mati, karena itu kita harus menyimpan (save) file ke penyimpanan.'];let fi=-1;
+function nf(){fi=(fi+1)%F.length;$('fk').textContent=F[fi];$('modal').classList.add('on')}
+/* ===== SIMULASI ===== */
+const P={kb:{n:'Keyboard',t:'INPUT',x:40,y:100,w:130,h:50,c:'#0ea5e9',d:'Memasukkan huruf, angka, dan perintah.'},ms:{n:'Mouse',t:'INPUT',x:60,y:200,w:90,h:55,c:'#38bdf8',d:'Menggerakkan penunjuk dan memilih objek.'},cpu:{n:'CPU',t:'PROSES',x:290,y:120,w:140,h:100,c:'#ef4444',d:'Otak komputer: memproses semua instruksi.'},ram:{n:'RAM',t:'MEMORI',x:500,y:110,w:140,h:55,c:'#f59e0b',d:'Memori sementara; data hilang saat mati.'},hdd:{n:'SSD / HDD',t:'SIMPAN',x:500,y:200,w:140,h:55,c:'#22c55e',d:'Penyimpanan permanen file & program.'},mon:{n:'Monitor',t:'OUTPUT',x:285,y:10,w:150,h:70,c:'#8b5cf6',d:'Menampilkan hasil proses secara visual.'}};
+const FL={kb:'M170 125L290 150',ms:'M150 228L290 190',out:'M360 120L360 80',ram:'M430 138L500 138',hdd:'M430 200L500 228'};
+const MODES={all:['Semua',['kb','ms','cpu','ram','hdd','mon'],['kb','ms','out','ram','hdd']],in:['⌨️ Input',['kb','ms'],['kb','ms']],pr:['🧠 Proses',['cpu','ram'],['ram']],out:['🖥️ Output',['mon'],['out']],sv:['💾 Simpan',['hdd'],['hdd']]};
+let cur='all',sel=null;
+function lab(cx,cy,t){const w=t.length*9+18;return`<rect x="${cx-w/2}" y="${cy-12}" width="${w}" height="24" rx="6" fill="#fff" stroke="#0c4a6e" stroke-width="1.5"/><text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="14" font-weight="800" fill="#0c4a6e">${t}</text>`}
+function simInit(){const m=MODES[cur];let s='<rect x="270" y="86" width="0" height="0"/>';
+for(const k in FL)s+=`<path d="${FL[k]}" fill="none" stroke="${m[2].includes(k)?'#f97316':'#94a3b8'}" stroke-width="5" ${m[2].includes(k)?'class="flow"':'opacity=".5"'} stroke-linecap="round"/>`;
+for(const k in P){const p=P[k],a=m[1].includes(k)||sel==k;s+=`<g class="part ${a?'on':''}" onclick="pick('${k}')" opacity="${a?1:.45}"><rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="14" fill="${p.c}" stroke="${sel==k?'#fbbf24':'#fff'}" stroke-width="${sel==k?6:4}"/>${lab(p.x+p.w/2,p.y+p.h/2,p.n)}</g>`}
+s+=lab(105,290,'INPUT')+lab(360,285,'PROSES')+lab(570,290,'MEMORI & SIMPAN');
+$('sv').innerHTML=s;$('md').innerHTML=Object.keys(MODES).map(k=>`<button class="btn ${k==cur?'ok':''}" onclick="mode('${k}')">${MODES[k][0]}</button>`).join('')}
+function mode(k){cur=k;sel=null;simInit();const n={all:'Semua jalur data aktif.',in:'Data dari keyboard & mouse mengalir ke CPU.',pr:'CPU mengolah data dan memakai RAM sebagai meja kerja.',out:'Hasil olahan CPU dikirim ke monitor.',sv:'File disimpan permanen di SSD/HDD.'}[k];$('tele').innerHTML=`&gt; MODE: ${MODES[k][0]}<br>&gt; ${n}`;tone(500+Object.keys(MODES).indexOf(k)*90,0,.15)}
+function pick(k){sel=k;const p=P[k];simInit();$('tele').innerHTML=`&gt; KOMPONEN : ${p.n}<br>&gt; JENIS : ${p.t}<br>&gt; FUNGSI : ${p.d}`;tone(440+Object.keys(P).indexOf(k)*80,0,.18,'square',.08)}
+/* ===== EVALUASI ===== */
+const MC=[['Perangkat yang berfungsi sebagai “otak” komputer adalah…',['Monitor','CPU','Keyboard','Speaker'],1],['Memori yang datanya hilang saat komputer dimatikan adalah…',['Hard disk','SSD','RAM','Flashdisk'],2],['Berikut yang termasuk perangkat output adalah…',['Mouse','Scanner','Printer','Mikrofon'],2]];
+const MJ=[['Keyboard','Memasukkan teks & angka'],['CPU','Memproses instruksi'],['SSD','Menyimpan data permanen'],['Monitor','Menampilkan hasil visual']];
+const TF=[['Mouse termasuk perangkat input.',true],['Hard disk bersifat volatile (data hilang saat listrik padam).',false],['Brainware adalah manusia yang mengoperasikan komputer.',true]];
+let sc,qi,tfi;
+function evInit(){sc={a:0,b:0,c:0};qi=0;tfi=0;showMC()}
+const T=['A: Pilihan Ganda (30 poin)','B: Menjodohkan (40 poin)','C: Benar / Salah (30 poin)','D: Rekapitulasi Skor'];
+const ttl=i=>$('evt').textContent='📝 Evaluasi — Babak '+T[i];
+function showMC(){ttl(0);const q=MC[qi];$('ev').innerHTML=`<div class="card"><div class="q">Soal ${qi+1}/3 — ${q[0]}</div><div class="op">${q[1].map((o,i)=>`<button class="btn" onclick="ansMC(${i},this)">${'ABCD'[i]}. ${o}</button>`).join('')}</div><div class="fb" id="fb" style="margin-top:10px"></div></div>`}
+function ansMC(i,b){const q=MC[qi],ok=i==q[2];document.querySelectorAll('.op .btn').forEach(x=>x.disabled=true);b.classList.add(ok?'ok':'no');b.style.color='#fff';if(ok){sc.a+=10;good()}else bad();$('fb').textContent=ok?'✅ Benar! +10 poin':'❌ Kurang tepat. Jawaban: '+q[1][q[2]];setTimeout(()=>{qi++;qi<3?showMC():showMJ()},1300)}
+let pairs,rord,ls,wr,dn;
+function showMJ(){ttl(1);rord=[2,0,3,1];ls=null;wr={};dn=0;
+$('ev').innerHTML=`<div class="card"><div class="q">Klik istilah di kiri, lalu klik pasangannya di kanan.</div><div class="mt" id="mtc"><div class="col">${MJ.map((m,i)=>`<div class="mi" id="L${i}" onclick="selL(${i})">${m[0]}</div>`).join('')}</div><div class="col">${rord.map(r=>`<div class="mi" id="R${r}" onclick="selR(${r})">${MJ[r][1]}</div>`).join('')}</div><svg id="ml"></svg></div><div class="fb" id="fb" style="margin-top:10px"></div></div>`}
+function selL(i){if($('L'+i).classList.contains('done'))return;document.querySelectorAll('[id^=L]').forEach(e=>e.classList.remove('sel'));$('L'+i).classList.add('sel');ls=i}
+function selR(r){if(ls==null||$('R'+r).classList.contains('done'))return;const L=$('L'+ls),R=$('R'+r);
+if(r==ls){const a=$('mtc'),x1=L.offsetLeft+L.offsetWidth,y1=L.offsetTop+L.offsetHeight/2,x2=R.offsetLeft,y2=R.offsetTop+R.offsetHeight/2;
+$('ml').insertAdjacentHTML('beforeend',`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#16a34a" stroke-width="5" stroke-linecap="round" stroke-dasharray="${Math.hypot(x2-x1,y2-y1)}" stroke-dashoffset="${Math.hypot(x2-x1,y2-y1)}"><animate attributeName="stroke-dashoffset" to="0" dur=".4s" fill="freeze"/></line>`);
+L.className='mi done';R.className='mi done';sc.b+=wr[ls]?5:10;good();dn++;ls=null;$('fb').textContent='✅ Cocok! Skor babak B: '+sc.b;
+if(dn==4)setTimeout(showTF,1300)}
+else{wr[ls]=1;R.classList.add('bad');bad();$('fb').textContent='❌ Belum cocok, coba lagi.';setTimeout(()=>R.classList.remove('bad'),450)}}
+function showTF(){ttl(2);const q=TF[tfi];$('ev').innerHTML=`<div class="card"><div class="q">Pernyataan ${tfi+1}/3 — ${q[0]}</div><div style="display:flex;gap:14px;justify-content:center"><button class="btn ok" onclick="ansTF(true)">✓ BENAR</button><button class="btn no" onclick="ansTF(false)">✗ SALAH</button></div><div class="fb" id="fb" style="margin-top:10px;text-align:center"></div></div>`}
+function ansTF(v){const ok=v==TF[tfi][1];document.querySelectorAll('.card .btn').forEach(x=>x.disabled=true);if(ok){sc.c+=10;good()}else bad();$('fb').textContent=ok?'✅ Tepat! +10 poin':'❌ Jawaban yang benar: '+(TF[tfi][1]?'BENAR':'SALAH');setTimeout(()=>{tfi++;tfi<3?showTF():recap()},1300)}
+function recap(){ttl(3);const t=sc.a+sc.b+sc.c;$('ev').innerHTML=`<div class="card" style="text-align:center"><div class="cup">🏆</div><div class="score">${t}</div><div class="q">${t>=80?'Luar biasa! ⭐⭐⭐':t>=60?'Bagus, terus berlatih! ⭐⭐':'Ayo belajar lagi! ⭐'}</div><p>Babak A: <b>${sc.a}/30</b> &nbsp;|&nbsp; Babak B: <b>${sc.b}/40</b> &nbsp;|&nbsp; Babak C: <b>${sc.c}/30</b></p><div style="margin-top:14px"><button class="btn" onclick="evInit()">🔄 ULANGI</button> <button class="btn ok" onclick="go(2)">🏠 MENU</button></div></div>`;[523,659,784,1047].forEach((f,i)=>tone(f,i*.15,.35,'triangle'))}
+simInit();
+</script></body></html>
